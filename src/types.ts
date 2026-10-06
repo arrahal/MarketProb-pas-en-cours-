@@ -45,7 +45,9 @@ export interface Asset {
 export interface NewsItem {
   id: string;
   headline: string;
+  headlineAr?: string;
   source: string;
+  sourceTier?: string;
   timeAgo: string;
   category: string;
   impact: 'HIGH' | 'MEDIUM' | 'LOW';
@@ -59,6 +61,11 @@ export interface NewsItem {
   probabilityShift?: number;
   confidence?: string;
   keyCatalyst?: string;
+  logicalTakeaway?: {
+    whatHappened: string;
+    marketImpact: string;
+    traderAction: string;
+  };
 }
 
 export interface BrokerPartner {

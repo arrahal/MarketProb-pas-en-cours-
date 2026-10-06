@@ -157,25 +157,32 @@ Category: ${category}
 Stated Impact: ${impact}
 
 Requirements:
-1. Provide a concise 2-sentence institutional breakdown automatically in professional Arabic (شرح مؤسساتي دقيق ومختصر في جملتين فقط).
+1. Provide a concise, highly focused institutional breakdown in professional Arabic (تحليل مالي مركز ومنطقي ومباشر في جملتين).
 2. Provide a 2-sentence English translation/breakdown.
 3. Determine market sentiment: "BULLISH", "BEARISH", or "NEUTRAL".
 4. Estimated probability shift percentage (from -15% to +15% integer).
 5. Confidence score: "HIGH", "MEDIUM", or "LOW".
 6. Key catalyst keyword in Arabic (الدافع الأساسي مثل: سيولة المؤسسات، التضخم، تخفيض الفائدة).
+7. Structured logical takeaway in Arabic:
+   - "whatHappened": ماذا حدث باختصار شديد وتركيز؟
+   - "marketImpact": أثر ذلك المنطقي المباشر على أسعار ${asset} والسيولة.
+   - "traderAction": التوجيه العملي الصارم للمتداول (مثل: الشراء مع إعادة الاختبار، تجنب الدخول العشوائي، وضع وقف خسارة محدد).
 
-Return the response in valid JSON matching this structure:
+Return valid JSON:
 {
-  "arabicAnalysis": "جملتين توضحان الأثر المؤسساتي باللغة العربية...",
-  "englishAnalysis": "Two concise institutional sentences explaining the market impact...",
+  "arabicAnalysis": "تحليل مركز باللغة العربية...",
+  "englishAnalysis": "Two concise institutional sentences explaining market impact...",
   "sentiment": "BULLISH",
   "probabilityShift": 6,
   "confidence": "HIGH",
-  "keyCatalyst": "سيولة المؤسسات وتدفقات الصناديق"
+  "keyCatalyst": "سيولة المؤسسات وتدفقات الصناديق",
+  "whatHappened": "ماذا حدث في الخبر بدقة...",
+  "marketImpact": "الأثر المنطقي على السعر والسيولة...",
+  "traderAction": "التوجيه المباشر للمتداول..."
 }`;
 
         const response = await ai.models.generateContent({
-          model: 'gemini-2.5-flash',
+          model: 'gemini-3.8-flash',
           contents: prompt,
           config: {
             responseMimeType: 'application/json',
@@ -188,15 +195,28 @@ Return the response in valid JSON matching this structure:
                 probabilityShift: { type: Type.INTEGER },
                 confidence: { type: Type.STRING },
                 keyCatalyst: { type: Type.STRING },
+                whatHappened: { type: Type.STRING },
+                marketImpact: { type: Type.STRING },
+                traderAction: { type: Type.STRING },
               },
-              required: ['arabicAnalysis', 'englishAnalysis', 'sentiment', 'probabilityShift', 'confidence', 'keyCatalyst'],
+              required: ['arabicAnalysis', 'englishAnalysis', 'sentiment', 'probabilityShift', 'confidence', 'keyCatalyst', 'whatHappened', 'marketImpact', 'traderAction'],
             },
           },
         });
 
         const parsed = JSON.parse(response.text || '{}');
         if (parsed.arabicAnalysis) {
-          return res.json({ success: true, analysis: parsed });
+          return res.json({ 
+            success: true, 
+            analysis: {
+              ...parsed,
+              logicalTakeaway: {
+                whatHappened: parsed.whatHappened || 'صدور بيانات اقتصادية مؤثرة على شهية المخاطرة.',
+                marketImpact: parsed.marketImpact || 'إعادة تسعير سريعة للأصل بناءً على التدفقات النقدية.',
+                traderAction: parsed.traderAction || 'التداول بحذر مع الاتجاه والالتزام بأمر وقف الخسارة.',
+              }
+            }
+          });
         }
       } catch (geminiError: any) {
         console.warn('Gemini news analysis error (falling back smoothly):', geminiError?.message || geminiError);
@@ -218,6 +238,17 @@ Return the response in valid JSON matching this structure:
         probabilityShift: isPositive ? 6 : -5,
         confidence: 'HIGH',
         keyCatalyst: isPositive ? 'زيادة أحجام الشراء' : 'مخاوف التضخم وقوة الدولار',
+        logicalTakeaway: {
+          whatHappened: isPositive
+            ? 'تزايد تدفقات السيولة الإيجابية وتراجع ضغوط البيع في الأسواق.'
+            : 'صدور بيانات أو تصريحات تشير لتباطؤ الطلب أو تشدد السياسة النقدية.',
+          marketImpact: isPositive
+            ? 'ارتفاع احتمال اختراق المقاومة القريبة وثبات السعر أعلى المتوسطات المتحركة.'
+            : 'اختبار مستويات الدعم الفنية مع اتساع مؤقت في فارق السبريد.',
+          traderAction: isPositive
+            ? 'البحث عن مراكز شراء عند الارتداد من الدعم مع وقف خسارة أسفل القاع الأخير.'
+            : 'تجنب مطاردة الهبوط وانتظار إشارات ارتداد واضحة قبل اتخاذ قرار جديد.',
+        },
       },
     });
   });
@@ -246,7 +277,7 @@ Generate:
 9. "topDrivers": array of 3 short drivers in Arabic (e.g. ["أحجام التداول الفوري", "كسر القمة السابقة", "عوائد السندات"]).`;
 
         const response = await ai.models.generateContent({
-          model: 'gemini-2.5-flash',
+          model: 'gemini-3.8-flash',
           contents: prompt,
           config: {
             responseMimeType: 'application/json',
@@ -304,7 +335,7 @@ Provide:
 4. "affectedAssets": array of affected ticker symbols (e.g. ["BTC", "USD", "GOLD"]).`;
 
         const response = await ai.models.generateContent({
-          model: 'gemini-2.5-flash',
+          model: 'gemini-3.8-flash',
           contents: prompt,
           config: {
             responseMimeType: 'application/json',

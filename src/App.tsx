@@ -104,7 +104,7 @@ function Dashboard() {
       if (response.ok) {
         const data = await response.json();
         if (data.success && data.analysis) {
-          const { arabicAnalysis, englishAnalysis, sentiment, probabilityShift, confidence, keyCatalyst } = data.analysis;
+          const { arabicAnalysis, englishAnalysis, sentiment, probabilityShift, confidence, keyCatalyst, logicalTakeaway } = data.analysis;
 
           setNewsList((prev) =>
             prev.map((item) =>
@@ -119,6 +119,7 @@ function Dashboard() {
                     probabilityShift,
                     confidence,
                     keyCatalyst,
+                    logicalTakeaway: logicalTakeaway || item.logicalTakeaway,
                   }
                 : item
             )
