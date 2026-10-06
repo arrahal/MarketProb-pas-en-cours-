@@ -1,5 +1,29 @@
 import { Asset, NewsItem, BrokerPartner } from '../types';
 
+// ============================================================================
+// AFFILIATE & BROKER REFERRAL CONFIGURATION
+// Easily swap in your real affiliate referral URLs and promo codes below:
+// ============================================================================
+export const EXNESS_AFFILIATE_URL = 'https://one.exness-track.com/a/YOUR_EXNESS_ID';
+export const EXNESS_PROMO_CODE = 'MARKETPROB';
+
+export const IC_MARKETS_AFFILIATE_URL = 'https://icmarkets.com/?camp=YOUR_ICMARKETS_ID';
+export const IC_MARKETS_PROMO_CODE = 'PROBTRADER';
+
+export const BINANCE_AFFILIATE_URL = 'https://accounts.binance.com/register?ref=YOUR_BINANCE_ID';
+export const BINANCE_PROMO_CODE = 'MARKETPROB_VIP';
+
+export const GENERAL_BROKER_AFFILIATE_URL = EXNESS_AFFILIATE_URL;
+
+// ============================================================================
+// LEGAL COMPLIANCE & RISK DISCLAIMERS (ARABIC & ENGLISH)
+// ============================================================================
+export const RISK_DISCLAIMER_AR = 
+  'إخلاء المسؤولية القانونية وتحذير المخاطر: إن تداول العملات الأجنبية (الفوركس)، والسلع، والعقود مقابل الفروقات (CFDs)، والأصول الرقمية ينطوي على درجة عالية من المخاطرة برأس المال وقد لا يكون مناسباً لجميع المستثمرين. الروافع المالية العالية قد تعمل لصالحك أو ضدك. يوفر موقع MarketProb تحليلات إحصائية وحسابات لإدارة المخاطر لأغراض تعليمية وإرشادية فقط، ولا تشكل أي من هذه البيانات نصيحة مالية أو توصية مباشرة بالاستثمار. تقع مسؤولية قرارات التداول وإدارة رأس المال بالكامل على عاتق المستخدم.';
+
+export const RISK_DISCLAIMER_EN = 
+  'Legal Risk Disclaimer: Trading Foreign Exchange (Forex), Commodities, Cryptocurrencies, and CFDs carries a high level of risk and may not be suitable for all investors. High leverage can work against you as well as for you. MarketProb provides mathematical and statistical models for educational and analytical purposes only. Nothing herein constitutes financial or investment advice. You are solely responsible for your trading decisions and capital management.';
+
 export const INITIAL_ASSETS: Asset[] = [
   {
     id: 'btc-usd',
@@ -362,8 +386,8 @@ export const BROKER_PARTNERS: BrokerPartner[] = [
     maxLeverage: '1:2000 Unlimited',
     spread: 'From 0.0 Pips',
     regulation: 'FCA, CySEC, FSA Regulated',
-    affiliateUrl: 'https://marketprob.com/partner/exness',
-    promoCode: 'MARKETPROB',
+    affiliateUrl: EXNESS_AFFILIATE_URL,
+    promoCode: EXNESS_PROMO_CODE,
     features: ['Instant Withdrawals (0 sec)', 'Zero Swap on Crypto/Gold', 'Tier-1 Segregated Funds', 'MetaTrader 4/5 & WebTerminal'],
   },
   {
@@ -375,8 +399,8 @@ export const BROKER_PARTNERS: BrokerPartner[] = [
     maxLeverage: '1:500',
     spread: '0.0 Pips Raw',
     regulation: 'ASIC, CySEC, SCB Regulated',
-    affiliateUrl: 'https://marketprob.com/partner/icmarkets',
-    promoCode: 'PROBTRADER',
+    affiliateUrl: IC_MARKETS_AFFILIATE_URL,
+    promoCode: IC_MARKETS_PROMO_CODE,
     features: ['Equinix NY4 Server Latency < 1ms', 'No Dealing Desk (NDD)', 'cTrader & TradingView Direct', 'Level II Market Depth'],
   },
   {
@@ -388,8 +412,8 @@ export const BROKER_PARTNERS: BrokerPartner[] = [
     maxLeverage: '1:125 Futures',
     spread: 'Maker 0.02% / Taker 0.04%',
     regulation: 'Global Tier Licenses',
-    affiliateUrl: 'https://marketprob.com/partner/binance',
-    promoCode: 'MARKETPROB_VIP',
+    affiliateUrl: BINANCE_AFFILIATE_URL,
+    promoCode: BINANCE_PROMO_CODE,
     features: ['Deepest Spot & Perp Orderbooks', 'SAFU Insurance Fund $1B+', 'API Latency under 5ms', 'VIP Fee Tier Rebates'],
   },
 ];

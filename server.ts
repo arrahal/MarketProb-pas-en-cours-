@@ -116,12 +116,18 @@ async function startServer() {
 
   // Gemini Client Initialization per SDK guidelines
   const apiKey = process.env.GEMINI_API_KEY || '';
-  const isValidApiKey = Boolean(apiKey && apiKey !== 'MY_GEMINI_API_KEY' && !apiKey.startsWith('MY_'));
+  const isValidApiKey = Boolean(
+    apiKey &&
+    apiKey.trim().length > 10 &&
+    apiKey !== 'MY_GEMINI_API_KEY' &&
+    !apiKey.startsWith('MY_') &&
+    apiKey !== 'undefined'
+  );
   let ai: GoogleGenAI | null = null;
   if (isValidApiKey) {
     try {
       ai = new GoogleGenAI({
-        apiKey,
+        apiKey: apiKey.trim(),
         httpOptions: {
           headers: {
             'User-Agent': 'aistudio-build',
@@ -129,7 +135,7 @@ async function startServer() {
         },
       });
     } catch (e) {
-      console.warn('Could not initialize GoogleGenAI client:', e);
+      console.warn('Could not initialize GoogleGenAI client (falling back to algorithmic engine):', e);
       ai = null;
     }
   }
@@ -169,7 +175,7 @@ Return the response in valid JSON matching this structure:
 }`;
 
         const response = await ai.models.generateContent({
-          model: 'gemini-3.8-flash',
+          model: 'gemini-2.5-flash',
           contents: prompt,
           config: {
             responseMimeType: 'application/json',
@@ -240,7 +246,7 @@ Generate:
 9. "topDrivers": array of 3 short drivers in Arabic (e.g. ["أحجام التداول الفوري", "كسر القمة السابقة", "عوائد السندات"]).`;
 
         const response = await ai.models.generateContent({
-          model: 'gemini-3.8-flash',
+          model: 'gemini-2.5-flash',
           contents: prompt,
           config: {
             responseMimeType: 'application/json',
@@ -298,7 +304,7 @@ Provide:
 4. "affectedAssets": array of affected ticker symbols (e.g. ["BTC", "USD", "GOLD"]).`;
 
         const response = await ai.models.generateContent({
-          model: 'gemini-3.8-flash',
+          model: 'gemini-2.5-flash',
           contents: prompt,
           config: {
             responseMimeType: 'application/json',

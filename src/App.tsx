@@ -284,6 +284,7 @@ function Dashboard() {
       <BrokerModal
         isOpen={isBrokerModalOpen}
         onClose={() => setIsBrokerModalOpen(false)}
+        language={language}
       />
     </div>
   );
